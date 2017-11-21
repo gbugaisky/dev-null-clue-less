@@ -1,0 +1,27 @@
+{
+  "name": "clue-less-server",
+  "version": "1.0.0",
+  "description": "Server-side application for the game Clueless",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/eslint **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gbugaisky/dev-null-clue-less.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gbugaisky/dev-null-clue-less/issues"
+  },
+  "homepage": "https://github.com/gbugaisky/dev-null-clue-less#readme",
+  "dependencies": {
+    "body-parser": "1.18.2",
+    "express": "4.16.2"
+  },
+  "devDependencies": {
+    "eslint": "4.11.0"
+  }
+}
