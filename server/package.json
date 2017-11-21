@@ -2,7 +2,7 @@
   "name": "clue-less-server",
   "version": "1.0.0",
   "description": "Server-side application for the game Clueless",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
     "test": "npm run lint",
     "lint": "./node_modules/.bin/eslint **/*.js"
@@ -19,7 +19,9 @@
   "homepage": "https://github.com/gbugaisky/dev-null-clue-less#readme",
   "dependencies": {
     "body-parser": "1.18.2",
-    "express": "4.16.2"
+    "express": "4.16.2",
+    "helmet": "3.9.0",
+    "winston": "2.4.0"
   },
   "devDependencies": {
     "eslint": "4.11.0"

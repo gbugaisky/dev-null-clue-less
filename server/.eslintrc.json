@@ -48,7 +48,7 @@
         "dot-notation": "error",
         "eol-last": [
             "error",
-            "never"
+            "always"
         ],
         "eqeqeq": "error",
         "for-direction": "error",
@@ -88,7 +88,7 @@
         "max-statements-per-line": "error",
         "multiline-comment-style": "error",
         "multiline-ternary": "error",
-        "new-cap": "error",
+        "new-cap": "off",
         "new-parens": "error",
         "newline-after-var": [
             "error",
