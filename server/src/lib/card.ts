@@ -6,9 +6,9 @@ import { User } from "./user";
 import { Weapon } from "./weapon";
 
 export class Card {
-  name: string;
-  type: CardType;
-  obj: any;
+  public name: string;
+  public type: CardType;
+  public obj: User | Weapon | Room;
 
   constructor(name: string, type: string, obj: User | Weapon | Room) {
     this.name = name;
@@ -16,11 +16,11 @@ export class Card {
     this.obj = obj;
   }
 
-  isType(type: any): boolean {
+  public isType(type: any): boolean {
     return this.type === type;
   }
 
-  contains(): string {
+  public contains(): string {
     return this.name;
   }
 }

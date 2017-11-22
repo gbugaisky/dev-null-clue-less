@@ -1,9 +1,8 @@
 "use strict";
 
+import { Room } from "./room";
 import { User } from "./user";
 import { Weapon } from "./weapon";
-import { Room } from "./room";
-import { start } from "repl";
 
 export class WinCondition {
   public murderer: User;
@@ -16,7 +15,7 @@ export class WinCondition {
     this.murderRoom = room;
   }
 
-  toString(): string {
+  public toString(): string {
     let str = "The Win Condition is ";
     str += this.murderer.name + " in ";
     str += this.murderRoom.name + " with ";
@@ -24,11 +23,13 @@ export class WinCondition {
     return str;
   }
 
-  winConditionMet(user: User, weapon: Weapon, room: Room): boolean {
+  public winConditionMet(user: User, weapon: Weapon, room: Room): boolean {
     return this.murderer.playerId === user.playerId &&
            this.murderWeapon === weapon &&
            this.murderRoom.id === room.id;
   }
 
-  playerOut(): void {}
+  public playerOut(): void {
+    return null;
+  }
 }

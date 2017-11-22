@@ -4,5 +4,5 @@ export enum Weapon {
   Wrench = "Wrench",
   Pistol = "Pistol",
   Candlestick = "Candlestick",
-  Lead_Pipe = "Lead Pipe"
+  Lead_Pipe = "Lead Pipe",
 }

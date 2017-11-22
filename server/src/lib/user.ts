@@ -5,28 +5,29 @@ import { Room } from "./room";
 import { Weapon } from "./weapon";
 
 export class User {
-  name: string;
-  playerId: number;
-  murderer: boolean;
+  public name: string;
+  public playerId: number;
+  public murderer: boolean;
 
   constructor(name: string, id: number) {
     this.name = name;
     this.playerId = id;
+    this.murderer = false;
   }
 
-  isMurderer(): boolean {
+  public isMurderer(): boolean {
     return this.murderer;
   }
 
-  location(): Hallway {
+  public location(): Hallway {
     return null;
   }
 
-  submitGuess(user: User, weapon: Weapon, room: Room): void {
-
+  public submitGuess(user: User, weapon: Weapon, room: Room): void {
+    return null;
   }
 
-  accusation(user: User, weapon: Weapon, room: Room): boolean {
+  public accusation(user: User, weapon: Weapon, room: Room): boolean {
     return null;
   }
 }
