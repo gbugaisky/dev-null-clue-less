@@ -4,8 +4,13 @@
   "description": "Server-side application for the game Clueless",
   "main": "server.js",
   "scripts": {
-    "test": "npm run lint",
-    "lint": "./node_modules/.bin/eslint ."
+    "start": "npm run build && npm run watch",
+    "build": "tsc && npm run tslint",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"tsc -w\" \"npm run serve\"",
+    "serve": "nodemon dist/server.js",
+    "test": "npm run tslint",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -24,6 +29,13 @@
     "winston": "2.4.0"
   },
   "devDependencies": {
-    "eslint": "4.11.0"
+    "@types/body-parser": "1.16.8",
+    "@types/helmet": "0.0.37",
+    "@types/node": "8.0.53",
+    "concurrently": "3.5.1",
+    "eslint": "4.11.0",
+    "nodemon": "1.12.1",
+    "tslint": "5.8.0",
+    "typescript": "2.6.1"
   }
 }
