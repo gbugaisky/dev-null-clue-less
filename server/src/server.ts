@@ -3,7 +3,7 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as helmet from "helmet";
-import * as routes from "./routes";
+import routes from "./routes";
 
 const app = express();
 

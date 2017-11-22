@@ -7,12 +7,12 @@ import { Weapon } from "./weapon";
 
 export class Card {
   public name: string;
-  public type: CardType;
+  public type: string;
   public obj: User | Weapon | Room;
 
   constructor(name: string, type: string, obj: User | Weapon | Room) {
     this.name = name;
-    this.type = CardType[type];
+    this.type = type;
     this.obj = obj;
   }
 
