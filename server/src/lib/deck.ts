@@ -94,4 +94,10 @@ export class Deck {
     let card: Card = this.cards[drawN];
     return {card: card, index: drawN};
   }
+
+  private sanityCheck(): boolean {
+    return (this.cards.length
+      + this.inPlayCards.length
+      + this.graveyard.length) === DECK_SIZE;
+  }
 }
