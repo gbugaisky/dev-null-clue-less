@@ -23,7 +23,7 @@ export class Deck {
     }
     for (const element of values) {
       // TODO!
-      this.cards.push(new Card("test String", typeof element, element));
+      this.cards.push(new Card(element.toString(), typeof element, element));
     }
   }
 

@@ -8,10 +8,14 @@ import { Weapon } from "./weapon";
 import { WinCondition } from "./win-condition";
 
 const ROOMS = [
-  "Observatory",
+  "Study",
+  "Hall",
+  "Lounge",
+  "Library",
+  "Billiard Room",
   "Dining Room",
-  "Living Room",
-  "Foyer",
+  "Conservatory",
+  "Ballroom",
   "Kitchen" ];
 
 export class Board {
@@ -66,6 +70,8 @@ export class Board {
       game.spaces.set(element.id, element);
     }
 
+    game.setAllAdjacencies();
+
     return game;
   }
 
@@ -82,13 +88,13 @@ export class Board {
   constructor(owner: User, players: User[], deck: Deck) {
     this.rooms = [];
     this.halls = [];
+    this.deck = deck;
     this.spaces = new Map<number, Hallway>();
     this.players = [];
-    this.winCondition = null;
+    this.winCondition = deck.setWinCondition();
     this.turn = 0;
     this.owner = owner;
     this.boardId = Math.random() * Number.MAX_SAFE_INTEGER;
-    this.deck = deck;
   }
 
   public listPlayers(): User[] {
@@ -133,4 +139,68 @@ export class Board {
   private isLegalMove(oldRoom: Room, newRoom: Room): boolean {
     return false;
   }
+
+  /**
+   * Builds the adjacencies.  We're hardcoding this setup
+   * for now.
+   * Board is built under the assumption of following ids:
+   *   12(R)--00(H)--13(R)--01(H)--14(R)
+   *    |             |             |
+   *   02(H)         03(H)         04(H)
+   *    |             |             |
+   *   15(R)--05(H)--16(R)--06(H)--17(R)
+   *    |             |             |
+   *   07(H)         08(H)         09(H)
+   *    |             |             |
+   *   18(R)--10(H)--19(R)--11(H)--20(R)
+   */
+
+  private setAllAdjacencies(): void {
+    // Set halls first
+    this.spaces.get(0).setAdjacencies([this.spaces.get(12), this.spaces.get(13)]);
+    this.spaces.get(1).setAdjacencies([this.spaces.get(13), this.spaces.get(14)]);
+    this.spaces.get(2).setAdjacencies([this.spaces.get(12), this.spaces.get(15)]);
+    this.spaces.get(3).setAdjacencies([this.spaces.get(13), this.spaces.get(16)]);
+    this.spaces.get(4).setAdjacencies([this.spaces.get(14), this.spaces.get(17)]);
+    this.spaces.get(5).setAdjacencies([this.spaces.get(15), this.spaces.get(16)]);
+    this.spaces.get(6).setAdjacencies([this.spaces.get(16), this.spaces.get(17)]);
+    this.spaces.get(7).setAdjacencies([this.spaces.get(15), this.spaces.get(18)]);
+    this.spaces.get(8).setAdjacencies([this.spaces.get(16), this.spaces.get(19)]);
+    this.spaces.get(9).setAdjacencies([this.spaces.get(17), this.spaces.get(20)]);
+    this.spaces.get(10).setAdjacencies([this.spaces.get(18), this.spaces.get(19)]);
+    this.spaces.get(11).setAdjacencies([this.spaces.get(19), this.spaces.get(20)]);
+
+    // Set Rooms (Corner rooms have diagonal Room adjacencies too)
+    // All Rooms except the center (16) should have 3 adjacencies
+    // Center 16 has 4.
+    this.spaces.get(12).setAdjacencies([this.spaces.get(0),
+                                        this.spaces.get(2),
+                                        this.spaces.get(20)]);
+    this.spaces.get(13).setAdjacencies([this.spaces.get(0),
+                                        this.spaces.get(1),
+                                        this.spaces.get(3)]);
+    this.spaces.get(14).setAdjacencies([this.spaces.get(1),
+                                        this.spaces.get(4),
+                                        this.spaces.get(18)]);
+    this.spaces.get(15).setAdjacencies([this.spaces.get(2),
+                                        this.spaces.get(5),
+                                        this.spaces.get(7)]);
+    this.spaces.get(16).setAdjacencies([this.spaces.get(3),
+                                        this.spaces.get(5),
+                                        this.spaces.get(6),
+                                        this.spaces.get(8)]);
+    this.spaces.get(17).setAdjacencies([this.spaces.get(4),
+                                        this.spaces.get(6),
+                                        this.spaces.get(9)]);
+    this.spaces.get(18).setAdjacencies([this.spaces.get(7),
+                                        this.spaces.get(10),
+                                        this.spaces.get(14)]);
+    this.spaces.get(19).setAdjacencies([this.spaces.get(8),
+                                        this.spaces.get(10),
+                                        this.spaces.get(11)]);
+    this.spaces.get(20).setAdjacencies([this.spaces.get(9),
+                                        this.spaces.get(11),
+                                        this.spaces.get(12)]);
+  }
+
 }
