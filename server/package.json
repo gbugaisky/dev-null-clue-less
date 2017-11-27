@@ -8,9 +8,11 @@
     "build": "tsc && npm run tslint",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"tsc -w\" \"npm run serve\"",
     "serve": "nodemon dist/server.js",
-    "test": "npm run tslint",
+    "test": "mocha -r ts-node/register src/**/*.spec.ts",
+    "posttest": "npm run tslint",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "lint": "eslint ."
+
   },
   "repository": {
     "type": "git",
@@ -30,11 +32,16 @@
   },
   "devDependencies": {
     "@types/body-parser": "1.16.8",
+    "@types/chai": "4.0.5",
     "@types/helmet": "0.0.37",
+    "@types/mocha": "2.2.44",
     "@types/node": "8.0.53",
+    "chai": "4.1.2",
     "concurrently": "3.5.1",
     "eslint": "4.11.0",
+    "mocha": "4.0.1",
     "nodemon": "1.12.1",
+    "ts-node": "3.3.0",
     "tslint": "5.8.0",
     "typescript": "2.6.1"
   }
