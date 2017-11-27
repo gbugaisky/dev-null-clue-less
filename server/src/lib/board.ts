@@ -4,11 +4,69 @@ import { Deck } from "./deck";
 import { Hallway } from "./hallway";
 import { Room } from "./room";
 import { User } from "./user";
+import { Weapon } from "./weapon";
 import { WinCondition } from "./win-condition";
 
+const ROOMS = [
+  "Observatory",
+  "Dining Room",
+  "Living Room",
+  "Foyer",
+  "Kitchen" ];
+
 export class Board {
-  public static initialize(users: User[]): Board {
-    return null;
+  public static initialize(users: string[]): Board {
+    if (users.length > 6) {
+      throw new RangeError("There can be no more than 6 players!");
+    }
+
+    const usersArr: User[] = [];
+    let uIdx = 0;
+    for (uIdx; uIdx < users.length; uIdx++) {
+      const nU: User = new User(users[uIdx], uIdx);
+      usersArr.push(nU);
+    }
+
+    const hallsArr: Hallway[] = [];
+    let hIdx = 0;
+    for (hIdx; hIdx < 12; hIdx++) {
+      hallsArr.push(new Hallway(null, hIdx));
+    }
+
+    const roomsArr: Room[] = [];
+    for (const roomStr of ROOMS) {
+      hIdx++;
+      roomsArr.push(new Room(roomStr, hIdx));
+    }
+
+    const deckSetUsers: User[] = [...usersArr];
+
+    while (deckSetUsers.length < 6) {
+      uIdx++;
+      deckSetUsers.push(new User("Random User" + uIdx, uIdx));
+    }
+
+    const deckSetup: Array<User | Room | Weapon> = [...deckSetUsers,
+                                                    ...roomsArr,
+                                                    Weapon.Candlestick,
+                                                    Weapon.Dagger,
+                                                    Weapon.Lead_Pipe,
+                                                    Weapon.Pistol,
+                                                    Weapon.Rope,
+                                                    Weapon.Wrench];
+
+    const deck: Deck = new Deck(deckSetup);
+
+    const game: Board = new Board(usersArr[0], usersArr, deck);
+
+    game.halls = hallsArr;
+    game.rooms = roomsArr;
+
+    for (const element of [...roomsArr, ...hallsArr]) {
+      game.spaces.set(element.id, element);
+    }
+
+    return game;
   }
 
   public rooms: Room[];
@@ -21,7 +79,7 @@ export class Board {
   public boardId: number;
   public deck: Deck;
 
-  constructor(owner: User) {
+  constructor(owner: User, players: User[], deck: Deck) {
     this.rooms = [];
     this.halls = [];
     this.spaces = new Map<number, Hallway>();
@@ -30,7 +88,7 @@ export class Board {
     this.turn = 0;
     this.owner = owner;
     this.boardId = Math.random() * Number.MAX_SAFE_INTEGER;
-    this.deck = null;
+    this.deck = deck;
   }
 
   public listPlayers(): User[] {
