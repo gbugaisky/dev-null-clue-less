@@ -51,4 +51,11 @@ export class Hallway {
       this.adjacent.set(hall.id, hall);
     }
   }
+
+  public isAdjacent(testHallway: Hallway): boolean {
+    if (this.adjacent.has(testHallway.id)){
+      return true;
+    }
+    return false;
+  }
 }
