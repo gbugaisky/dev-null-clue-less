@@ -8,19 +8,19 @@ export class User {
   public name: string;
   public playerId: number;
   public murderer: boolean;
+  public realPlayer: boolean;
+  public location: Hallway;
 
-  constructor(name: string, id: number) {
+  constructor(name: string, id: number, realPlayer: boolean) {
     this.name = name;
     this.playerId = id;
     this.murderer = false;
+    this.realPlayer = realPlayer;
+    this.location = null;
   }
 
   public isMurderer(): boolean {
     return this.murderer;
-  }
-
-  public location(): Hallway {
-    return null;
   }
 
   public submitGuess(user: User, weapon: Weapon, room: Room): void {

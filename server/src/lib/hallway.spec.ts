@@ -8,8 +8,8 @@ import "mocha";
 
 describe("Room Class Tests", () => {
   it("only permits one person in the room at a time", () => {
-    const u1 = new User("User 1", 1);
-    const u2 = new User("User 2", 2);
+    const u1 = new User("User 1", 1, false);
+    const u2 = new User("User 2", 2, false);
 
     const room = new Hallway("Test Hallway", 0);
 
