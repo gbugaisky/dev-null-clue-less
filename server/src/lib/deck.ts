@@ -23,7 +23,15 @@ export class Deck {
     }
     for (const element of values) {
       // TODO!
-      this.cards.push(new Card(element.toString(), typeof element, element));
+      let name: string = "";
+
+      if (element instanceof User || element instanceof Room) {
+        name = element.name;
+      } else {
+        name = element;
+      }
+
+      this.cards.push(new Card(name, typeof element, element));
     }
   }
 
