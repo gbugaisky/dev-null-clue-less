@@ -8,6 +8,11 @@ import * as express from "express";
 import * as helmet from "helmet";
 import routes from "./routes";
 
+import { Controller } from "./lib/controller";
+import { Data } from "./lib/data";
+
+const data = Data.initialize();
+
 const app = express();
 
 app.use(helmet());
@@ -22,5 +27,8 @@ server.listen(3000);
 
 io.on("connection", (sio) => {
   sio.emit("hello", "Welcome.");
-  // sio.on()
+  sio.on("start", (users) => {
+    const returnVal = Controller.setupGame(data, users);
+    sio.emit("broadcast", returnVal);
+  });
 });

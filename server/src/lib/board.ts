@@ -45,7 +45,7 @@ export class Board {
 
     const deckSetUsers: User[] = [...usersArr];
 
-    // This sets up the required placeholer users
+    // This sets up the required placeholder users
     while (deckSetUsers.length < 6) {
       uIdx++;
       deckSetUsers.push(new User("Random User" + uIdx, uIdx, false));
@@ -101,7 +101,7 @@ export class Board {
   public boardId: number;
   public deck: Deck;
 
-  constructor(owner: User, players: User[], deck: Deck) {
+  private constructor(owner: User, players: User[], deck: Deck) {
     this.rooms = [];
     this.halls = [];
     this.deck = deck;
@@ -130,7 +130,7 @@ export class Board {
   }
 
   public isLegalAccusation(user: User, accusedRoom: Room): boolean {
-    return false;
+    return user.location === accusedRoom;
   }
 
   public cleanup(): boolean {
@@ -141,16 +141,17 @@ export class Board {
     return null;
   }
 
-  private setGrid(halls: Hallway[], rooms: Room[]): Map<number, Hallway> {
-    return null;
-  }
+  // Replaced by static setAllAdjacencies function
+  // private setGrid(halls: Hallway[], rooms: Room[]): Map<number, Hallway> {
+  //   return null;
+  // }
 
   /**
    * Function for determining if a move from room to room
    * is legal
    * @param oldRoom Room
    * @param newRoom Room
-   * @returns boolean
+   * @returns boolean true if the room movement is permitted, false otherwise
    */
   private isLegalMove(oldRoom: Room, newRoom: Room): boolean {
     return false;
