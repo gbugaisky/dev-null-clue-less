@@ -37,7 +37,7 @@ export class Hallway {
       return false;
     }
     this.occupant.set(user, true);
-    user.currentLocation = this;
+    user.location = this;
     return true;
   }
 
@@ -54,9 +54,6 @@ export class Hallway {
   }
 
   public isAdjacent(testHallway: Hallway): boolean {
-    if (this.adjacent.has(testHallway.id)){
-      return true;
-    }
-    return false;
+    return this.adjacent.has(testHallway.id)
   }
 }

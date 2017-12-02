@@ -9,23 +9,23 @@ export class User {
   public playerId: number;
   public murderer: boolean;
   public realPlayer: boolean;
-  public currentLocation: Hallway;
+  public location: Hallway;
 
   constructor(name: string, id: number, realPlayer: boolean) {
     this.name = name;
     this.playerId = id;
     this.murderer = false;
     this.realPlayer = realPlayer;
-    this.currentLocation = null;
+    this.location = null;
   }
 
   public isMurderer(): boolean {
     return this.murderer;
   }
 
-  public location(): Hallway {
+  /*public location(): Hallway {
     return this.currentLocation;
-  }
+  }*/
 
   // move to board?
   public submitGuess(user: User, weapon: Weapon, room: Room): void {
