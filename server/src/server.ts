@@ -29,6 +29,11 @@ io.on("connection", (sio) => {
   sio.emit("hello", "Welcome.");
   sio.on("start", (users) => {
     const returnVal = Controller.setupGame(data, users);
-    sio.emit("broadcast", returnVal);
+    io.in("game").emit("game start", returnVal);
+  });
+
+  sio.on("move", (move) => {
+    // TODO: call move
+    io.in("game").emit("player move", "data");
   });
 });
