@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "npm run build && npm run watch",
+    "start:prod": "npm run build && node dist/server.js",
     "build": "tsc && npm run tslint",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"tsc -w\" \"npm run serve\"",
     "serve": "nodemon dist/server.js",
