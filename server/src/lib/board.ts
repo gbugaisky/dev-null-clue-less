@@ -27,7 +27,7 @@ export class Board {
     const usersArr: User[] = [];
     let uIdx = 0;
     for (uIdx; uIdx < users.length; uIdx++) {
-      const nU: User = new User(users[uIdx], uIdx);
+      const nU: User = new User(users[uIdx], uIdx, true);
       usersArr.push(nU);
     }
 
@@ -45,9 +45,10 @@ export class Board {
 
     const deckSetUsers: User[] = [...usersArr];
 
+    // This sets up the required placeholder users
     while (deckSetUsers.length < 6) {
       uIdx++;
-      deckSetUsers.push(new User("Random User" + uIdx, uIdx));
+      deckSetUsers.push(new User("Random User" + uIdx, uIdx, false));
     }
 
     const deckSetup: Array<User | Room | Weapon> = [...deckSetUsers,
@@ -72,6 +73,21 @@ export class Board {
 
     game.setAllAdjacencies();
 
+    const unsetUsers: number[] = [0, 1, 2, 3, 4, 5];
+    const unsetStarts: number[] = [1, 2, 4, 7, 10, 11];
+
+    while (unsetUsers.length > 0) {
+      const randUser: number = Math.random() * unsetUsers.length - 1;
+      const randStart: number = Math.random() * unsetStarts.length - 1;
+
+      const user = game.players[unsetUsers[randUser]];
+
+      game.spaces.get(unsetStarts[randStart]).enter(user);
+
+      unsetUsers.splice(randUser, 1);
+      unsetStarts.splice(randStart, 1);
+    }
+
     return game;
   }
 
@@ -88,7 +104,7 @@ export class Board {
   public guessMade: boolean = false;
   public moveMade: boolean = false;
 
-  constructor(owner: User, players: User[], deck: Deck) {
+  private constructor(owner: User, players: User[], deck: Deck) {
     this.rooms = [];
     this.halls = [];
     this.deck = deck;
@@ -197,16 +213,17 @@ export class Board {
     return null;
   }
 
-  private setGrid(halls: Hallway[], rooms: Room[]): Map<number, Hallway> {
-    return null;
-  }
+  // Replaced by static setAllAdjacencies function
+  // private setGrid(halls: Hallway[], rooms: Room[]): Map<number, Hallway> {
+  //   return null;
+  // }
 
   /**
    * Function for determining if a move from room to room
    * is legal
    * @param oldRoom Room
    * @param newRoom Room
-   * @returns boolean
+   * @returns boolean true if the room movement is permitted, false otherwise
    */
   public isLegalMove(oldRoom: Hallway, newRoom: Hallway): boolean {
     //if hallways/rooms are adjacent, then valid move

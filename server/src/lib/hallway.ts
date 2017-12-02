@@ -37,6 +37,7 @@ export class Hallway {
       return false;
     }
     this.occupant.set(user, true);
+    user.currentLocation = this;
     return true;
   }
 

@@ -8,12 +8,15 @@ export class User {
   public name: string;
   public playerId: number;
   public murderer: boolean;
+  public realPlayer: boolean;
   public currentLocation: Hallway;
 
-  constructor(name: string, id: number) {
+  constructor(name: string, id: number, realPlayer: boolean) {
     this.name = name;
     this.playerId = id;
     this.murderer = false;
+    this.realPlayer = realPlayer;
+    this.currentLocation = null;
   }
 
   public isMurderer(): boolean {
