@@ -29,6 +29,7 @@ export class WinCondition {
            this.murderRoom.id === room.id;
   }
 
+  //moved to board class
   public playerOut(): void {
     return null;
   }

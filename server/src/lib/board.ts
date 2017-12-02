@@ -85,13 +85,15 @@ export class Board {
   public boardId: number;
   public deck: Deck;
   public currentPlayer: User;
+  public guessMade: boolean = false;
+  public moveMade: boolean = false;
 
   constructor(owner: User, players: User[], deck: Deck) {
     this.rooms = [];
     this.halls = [];
     this.deck = deck;
     this.spaces = new Map<number, Hallway>();
-    this.players = [];
+    this.players = []; //list of players ordered by turn.
     this.winCondition = deck.setWinCondition();
     this.turn = 0;
     this.owner = owner;
@@ -101,7 +103,23 @@ export class Board {
   public listPlayers(): User[] {
     return this.players;
   }
+  
+  public nextPlayer(): User {
+    var index = this.players.indexOf(this.currentPlayer);
+    if (index = this.players.length) {
+      index = 0;
+    }else {
+      index =+ 1;
+    }
+    return this.players[index];
+  }
 
+  public nextTurn(): void {
+    this.currentPlayer = this.nextPlayer();
+    this.guessMade = false;
+    this.moveMade = false;
+    return
+  }
   /**
    * Function for moving a player to a room
    * Returns a boolean depending on whether the move was
@@ -115,6 +133,7 @@ export class Board {
       user.location().exit;
       room.enter(user);
       user.currentLocation = room;
+      this.moveMade = true;
       return true
     }
     console.log("Not a valid move. Please try again.");
@@ -152,7 +171,8 @@ export class Board {
     if (index > -1) {
       this.players.splice(index, 1);
     }
-    console.log("The player " + user.name + " has been removed from the game for a false accusation.");
+    console.log("The player " + user.name + " has been removed from the game for a false accusation. Proceeding to next player's turn");
+    this.nextTurn();
     return null
   }
 
@@ -160,6 +180,7 @@ export class Board {
     //checks if person to right has any of the cards guessUser, weapon, room
     //could use currentPlayer?
     if (this.isLegalGuess(currentUser, room)){
+      this.guessMade = true;
       //next player?
     }else{
       console.log("User must be in guessed room. Please resubmit guess.")
