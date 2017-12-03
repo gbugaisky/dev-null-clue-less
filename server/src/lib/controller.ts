@@ -16,6 +16,7 @@ export class Controller {
       nU.realUser = user.realPlayer;
       nU.startingRoom = user.location.id;
       nU.turnOrder = turnOrder.indexOf(nU.startingRoom);
+      nU.playerId = user.playerId;
       returnedData.users[user.name] = nU;
     }
 
