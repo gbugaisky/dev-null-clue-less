@@ -12,11 +12,13 @@ export class Deck {
   public cards: Card[];
   public inPlayCards: Card[];
   public graveyard: Card[];
+  public winCards: Card[];
 
   constructor(values: Array<User | Weapon | Room>) {
     this.cards = [];
     this.inPlayCards = [];
     this.graveyard = [];
+    this.winCards = [];
 
     if (values.length !== DECK_SIZE) {
       throw new RangeError("Missing values in initializer.  Must have a values array of length " + DECK_SIZE);
@@ -31,7 +33,7 @@ export class Deck {
         name = element;
       }
 
-      this.cards.push(new Card(name, typeof element, element));
+      this.cards.push(new Card(name, element.constructor.name, element));
     }
   }
 
@@ -74,22 +76,29 @@ export class Deck {
 
     while (!user) {
       const pull = this.draw();
-      if (pull.card.isType(User)) {
+      if (pull.card.isType("User")) {
         user = pull.card.obj as User;
+        this.winCards.push(pull.card);
+        this.cards.splice(pull.index, 1);
       }
     }
 
     while (!weapon) {
       const pull = this.draw();
-      if (pull.card.isType(Weapon)) {
+      // Note: Enums are of type string, unlike our objects
+      if (pull.card.isType("String")) {
         weapon = pull.card.obj as Weapon;
+        this.winCards.push(pull.card);
+        this.cards.splice(pull.index, 1);
       }
     }
 
     while (!room) {
       const pull = this.draw();
-      if (pull.card.isType(Room)) {
+      if (pull.card.isType("Room")) {
         room = pull.card.obj as Room;
+        this.winCards.push(pull.card);
+        this.cards.splice(pull.index, 1);
       }
     }
 
@@ -102,7 +111,7 @@ export class Deck {
   }
 
   private draw(): {card: Card, index: number} {
-    const index: number = Math.random() * this.cards.length;
+    const index: number = Math.floor(Math.random() * this.cards.length);
     const card: Card = this.cards[index];
     return {card, index};
   }
