@@ -109,7 +109,7 @@ export class Board {
     this.halls = [];
     this.deck = deck;
     this.spaces = new Map<number, Hallway>();
-    this.players = []; //list of players ordered by turn.
+    this.players = [];
     this.winCondition = deck.setWinCondition();
     this.turn = 0;
     this.owner = owner;
@@ -131,11 +131,11 @@ export class Board {
    * @returns User
    */
   public nextPlayer(): User {
-    var index = this.players.indexOf(this.currentPlayer);
-    if (index = this.players.length) {
+    let index = this.players.indexOf(this.currentPlayer);
+    if (index === this.players.length) {
       index = 0;
-    }else {
-      index =+ 1;
+    } else {
+      index += 1;
     }
     return this.players[index];
   }
@@ -149,7 +149,7 @@ export class Board {
     this.currentPlayer = this.nextPlayer();
     this.guessMade = false;
     this.moveMade = false;
-    return
+    return;
   }
 
   /**
@@ -161,14 +161,13 @@ export class Board {
    * @returns boolean
    */
   public move(user: User, room: Hallway): boolean {
-    if (this.isLegalMove(user.location, room)){
-      user.location.exit;
+    if (this.isLegalMove(user.location, room)) {
+      user.location.exit(user);
       room.enter(user);
       user.location = room;
       this.moveMade = true;
-      return true
+      return true;
     }
-    console.log("Not a valid move. Please try again.");
     return false;
   }
 
@@ -178,10 +177,9 @@ export class Board {
    * @param user User player accusing
    * @param accusedRoom Room accused
    * @returns boolean
-   */  
+   */
   public isLegalAccusation(user: User, accusedRoom: Room): boolean {
-    // user must be in the accusedRoom
-    if (accusedRoom.contains().indexOf(user) >= -1){
+    if (accusedRoom.contains().indexOf(user) >= -1) {
       return true;
     }
     return false;
@@ -189,7 +187,7 @@ export class Board {
 
   public isLegalGuess(user: User, guessedRoom: Room): boolean {
     // user must be in the accusedRoom
-    return user.location == guessedRoom
+    return user.location === guessedRoom;
   }
 
   public cleanup(): boolean {
@@ -197,37 +195,34 @@ export class Board {
   }
 
   public gameOver(): void {
-    //currently wincondition in board, but make accusation in user. how to link?
+    // currently wincondition in board, but make accusation in user. how to link?
     this.cleanup();
     return null;
   }
 
-  public removePlayer(user: User): void{
-    var index = this.players.indexOf(user);
+  public removePlayer(user: User): void {
+    const index = this.players.indexOf(user);
     if (index > -1) {
       this.players.splice(index, 1);
     }
-    console.log("The player " + user.name + " has been removed from the game for a false accusation. Proceeding to next player's turn");
     this.nextTurn();
-    return null
+    return null;
   }
 
   public userSubmitGuess(currentUser: User, guessUser: User, weapon: Weapon, room: Room): void {
-    //checks if person to right has any of the cards guessUser, weapon, room
-    //could use currentPlayer?
-    if (this.isLegalGuess(currentUser, room)){
+    // checks if person to right has any of the cards guessUser, weapon, room
+    // could use currentPlayer?
+    if (this.isLegalGuess(currentUser, room)) {
       this.guessMade = true;
-      //next player?
-    }else{
-      console.log("User must be in guessed room. Please resubmit guess.")
+      // next player?
     }
     return null;
   }
 
   public userAccusation(currentUser: User, accusedUser: User, weapon: Weapon, room: Room): boolean {
-    if (this.winCondition.winConditionMet(accusedUser, weapon, room) == true){
+    if (this.winCondition.winConditionMet(accusedUser, weapon, room) === true) {
       this.gameOver();
-    } else{
+    } else {
       this.removePlayer(currentUser);
     }
     return null;
@@ -246,8 +241,8 @@ export class Board {
    * @returns boolean true if the room movement is permitted, false otherwise
    */
   public isLegalMove(oldRoom: Hallway, newRoom: Hallway): boolean {
-    //if hallways/rooms are adjacent, then valid move
-    return oldRoom.isAdjacent(newRoom)
+    // if hallways/rooms are adjacent, then valid move
+    return oldRoom.isAdjacent(newRoom);
   }
 
   /**

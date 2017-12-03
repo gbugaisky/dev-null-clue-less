@@ -31,7 +31,7 @@ export class User {
   public submitGuess(user: User, weapon: Weapon, room: Room): void {
     return null;
   }
-  //move to board?
+  // move to board?
   public accusation(user: User, weapon: Weapon, room: Room): boolean {
     return null;
   }
