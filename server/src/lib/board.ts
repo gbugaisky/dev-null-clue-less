@@ -201,10 +201,11 @@ export class Board {
   }
 
   public removePlayer(user: User): void {
-    const index = this.players.indexOf(user);
+    /*const index = this.players.indexOf(user);
     if (index > -1) {
       this.players.splice(index, 1);
-    }
+    }*/
+    user.inGame = false;
     this.nextTurn();
     return null;
   }
@@ -214,7 +215,7 @@ export class Board {
     // could use currentPlayer?
     if (this.isLegalGuess(currentUser, room)) {
       this.guessMade = true;
-      // next player?
+      // add logic for peeking at cards of next player
     }
     return null;
   }
