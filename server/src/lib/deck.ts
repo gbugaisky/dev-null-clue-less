@@ -26,14 +26,17 @@ export class Deck {
     for (const element of values) {
       // TODO!
       let name: string = "";
+      let type: string = "";
 
       if (element instanceof User || element instanceof Room) {
         name = element.name;
+        type = element.constructor.name;
       } else {
         name = element;
+        type = "Weapon";
       }
 
-      this.cards.push(new Card(name, element.constructor.name, element));
+      this.cards.push(new Card(name, type, element));
     }
   }
 
@@ -86,8 +89,7 @@ export class Deck {
 
     while (!weapon) {
       const pull = this.draw();
-      // Note: Enums are of type string, unlike our objects
-      if (pull.card.isType("String")) {
+      if (pull.card.isType("Weapon")) {
         weapon = pull.card.obj as Weapon;
         this.winCards.push(pull.card);
         this.cards.splice(pull.index, 1);
