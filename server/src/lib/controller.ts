@@ -1,7 +1,7 @@
 import { Board } from "./board";
 import { Data } from "./data";
-import { InitializationData } from "./initialization-data";
 import { Hallway } from "./hallway";
+import { InitializationData } from "./initialization-data";
 import { Room } from "./room";
 import { User } from "./user";
 import { UserInitializationData } from "./user-initialization-data";
@@ -38,7 +38,7 @@ export class Controller {
     return;
   }
 
-  public guess(game: Board, user: User, guessedUser: User, room: Room, weapon: Weapon): void{ 
+  public guess(game: Board, user: User, guessedUser: User, room: Room, weapon: Weapon): void {
     return;
   }
 }
