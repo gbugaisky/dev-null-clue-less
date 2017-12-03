@@ -26,10 +26,15 @@ export class User {
     return this.murderer;
   }
 
+  /*public location(): Hallway {
+    return this.currentLocation;
+  }*/
+
+  // move to board?
   public submitGuess(user: User, weapon: Weapon, room: Room): void {
     return null;
   }
-
+  // move to board?
   public accusation(user: User, weapon: Weapon, room: Room): boolean {
     return null;
   }
