@@ -1,5 +1,6 @@
 "use strict";
 
+import { Card } from "./card";
 import { Hallway } from "./hallway";
 import { Room } from "./room";
 import { Weapon } from "./weapon";
@@ -10,6 +11,7 @@ export class User {
   public murderer: boolean;
   public realPlayer: boolean;
   public location: Hallway;
+  public hand: Card[];
 
   constructor(name: string, id: number, realPlayer: boolean) {
     this.name = name;
@@ -17,6 +19,7 @@ export class User {
     this.murderer = false;
     this.realPlayer = realPlayer;
     this.location = null;
+    this.hand = [];
   }
 
   public isMurderer(): boolean {

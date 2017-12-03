@@ -80,6 +80,7 @@ export class Deck {
         user = pull.card.obj as User;
         this.winCards.push(pull.card);
         this.cards.splice(pull.index, 1);
+        user.murderer = true;
       }
     }
 
