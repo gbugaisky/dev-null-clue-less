@@ -39,16 +39,16 @@ export class Board {
 
     const roomsArr: Room[] = [];
     for (const roomStr of ROOMS) {
-      hIdx++;
       roomsArr.push(new Room(roomStr, hIdx));
+      hIdx++;
     }
 
     const deckSetUsers: User[] = [...usersArr];
 
     // This sets up the required placeholder users
     while (deckSetUsers.length < 6) {
-      uIdx++;
       deckSetUsers.push(new User("Random User" + uIdx, uIdx, false));
+      uIdx++;
     }
 
     const deckSetup: Array<User | Room | Weapon> = [...deckSetUsers,
@@ -62,7 +62,7 @@ export class Board {
 
     const deck: Deck = new Deck(deckSetup);
 
-    const game: Board = new Board(usersArr[0], usersArr, deck);
+    const game: Board = new Board(usersArr[0], deckSetUsers, deck);
 
     game.halls = hallsArr;
     game.rooms = roomsArr;
@@ -77,8 +77,8 @@ export class Board {
     const unsetStarts: number[] = [1, 2, 4, 7, 10, 11];
 
     while (unsetUsers.length > 0) {
-      const randUser: number = Math.random() * unsetUsers.length - 1;
-      const randStart: number = Math.random() * unsetStarts.length - 1;
+      const randUser: number = Math.floor(Math.random() * (unsetUsers.length - 1));
+      const randStart: number = Math.floor(Math.random() * (unsetStarts.length - 1));
 
       const user = game.players[unsetUsers[randUser]];
 
@@ -109,7 +109,7 @@ export class Board {
     this.halls = [];
     this.deck = deck;
     this.spaces = new Map<number, Hallway>();
-    this.players = [];
+    this.players = players;
     this.winCondition = deck.setWinCondition();
     this.turn = 0;
     this.owner = owner;
