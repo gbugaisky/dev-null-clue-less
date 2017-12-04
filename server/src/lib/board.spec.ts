@@ -1,6 +1,7 @@
 /* tslint:disable:no-unused-expression */
 
 import { Board } from "./board";
+import { Card } from "./card";
 import { Deck } from "./deck";
 import { Hallway } from "./hallway";
 import { Room } from "./room";
@@ -121,5 +122,78 @@ describe("Board Class Tests", () => {
     expect(game.moveMade).to.equal(true);
     expect(contents[0].location).to.equal(room);
     expect(room.contains().indexOf(contents[0])).to.equal(0);
+  });
+
+  it("testing legal guess", () => {
+    const game: Board = Board.initialize(["user1", "user2", "user3", "user4", "user5", "user6"]);
+    const contents = game.listPlayers();
+    const room = new Room("Test Room", 0);
+    const u1 = contents[0];
+
+    u1.location.exit(u1);
+    u1.location = room;
+    room.enter(u1);
+    expect(game.isLegalGuess(u1, room)).to.equal(true);
+  });
+
+  it("testing illegal guess", () => {
+    const game: Board = Board.initialize(["user1", "user2", "user3", "user4", "user5", "user6"]);
+    const contents = game.listPlayers();
+    const room = new Room("Test Room", 0);
+    const u1 = contents[0];
+    const fakeRoom = new Room("fake", 100);
+
+    u1.location.exit(u1);
+    u1.location = room;
+    room.enter(u1);
+    expect(game.isLegalGuess(u1, fakeRoom)).to.equal(false);
+  });
+
+  it("testing guess submission where card exists", () => {
+    const game: Board = Board.initialize(["user1", "user2", "user3", "user4", "user5", "user6"]);
+    const contents = game.listPlayers();
+    const room = new Room("Test Room", 0);
+    const u1 = contents[0];
+    const u2 = contents[1];
+    const fakeRoom = new Room("fake", 100);
+    let possibleCards: Card[];
+
+    u1.location.exit(u1);
+    u1.location = room;
+    room.enter(u1);
+
+    const WeaponCard = new Card(Weapon.Rope, "Weapon", Weapon.Rope);
+    const UserCard = new Card(u1.name, "User", u1);
+    const HallwayCard = new Card(room.name, "Hallway", room);
+    game.nextPlayer().hand = [WeaponCard, UserCard, HallwayCard];
+    possibleCards = [HallwayCard];
+
+    expect(game.isLegalGuess(u1, room)).to.equal(true);
+    expect(game.nextPlayer()).to.equal(u2);
+    expect(game.nextPlayer().handContains("Rope")).to.equal(true);
+    expect(game.userSubmitGuess(u1, u2, Weapon.Candlestick, room)).to.equal(HallwayCard.name);
+  });
+
+  it("testing guess submission where card does not exist", () => {
+    const game: Board = Board.initialize(["user1", "user2", "user3", "user4", "user5", "user6"]);
+    const contents = game.listPlayers();
+    const room = new Room("Test Room", 0);
+    const u1 = contents[0];
+    const u2 = contents[1];
+    const fakeRoom = new Room("fake", 100);
+    let possibleCards: Card[];
+
+    u1.location.exit(u1);
+    u1.location = room;
+    room.enter(u1);
+
+    const WeaponCard = new Card(Weapon.Rope, "Weapon", Weapon.Rope);
+    const UserCard = new Card(u1.name, "User", u1);
+    const HallwayCard = new Card(fakeRoom.name, "Hallway", fakeRoom);
+    game.nextPlayer().hand = [WeaponCard, UserCard, HallwayCard];
+    possibleCards = [HallwayCard];
+
+    expect(game.isLegalGuess(u1, room)).to.equal(true);
+    expect(game.userSubmitGuess(u1, u2, Weapon.Candlestick, room)).to.equal(null);
   });
 });

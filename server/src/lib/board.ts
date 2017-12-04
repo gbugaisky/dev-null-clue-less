@@ -194,14 +194,9 @@ export class Board {
     return user.location === guessedRoom;
   }
 
-  public cleanup(): boolean {
-    return false;
-  }
-
   public gameOver(): User {
     // currently wincondition in board, but make accusation in user. how to link?
     this.gameOverStatus = true;
-    // this.cleanup();
     return this.currentPlayer;
   }
 
@@ -211,39 +206,40 @@ export class Board {
     return null;
   }
 
-  public userSubmitGuess(currentUser: User, guessUser: User, weapon: Weapon, room: Room): Card {
+  public userSubmitGuess(currentUser: User, guessUser: User, weapon: Weapon, room: Room): string {
     // checks if person to right has any of the cards guessUser, weapon, room
     // could use currentPlayer?
     if (this.isLegalGuess(currentUser, room)) {
       this.guessMade = true;
       const WeaponCard = new Card(weapon, "Weapon", weapon);
       const UserCard = new Card(guessUser.name, "User", guessUser);
-      const HallwayCard = new Card( room.name, "Hallway", room);
+      const HallwayCard = new Card(room.name, "Hallway", room);
+      const nextUser = this.nextPlayer();
       let possibleCards: Card[];
 
-      if (this.nextPlayer().hand.indexOf(WeaponCard) > -1
-      && this.nextPlayer().hand.indexOf(UserCard) > -1
-      && this.nextPlayer().hand.indexOf(HallwayCard) > -1) {
+      guessUser.location.exit(guessUser);
+      guessUser.location = room;
+      room.enter(guessUser);
+
+      if (nextUser.handContains(WeaponCard.name) && nextUser.handContains(UserCard.name)
+      && nextUser.handContains(HallwayCard.name)) {
         possibleCards = [WeaponCard, UserCard, HallwayCard];
-      } else if (this.nextPlayer().hand.indexOf(WeaponCard) > -1
-      && this.nextPlayer().hand.indexOf(UserCard) > -1) {
+      } else if (nextUser.handContains(WeaponCard.name) && nextUser.handContains(UserCard.name)) {
         possibleCards = [WeaponCard, UserCard];
-      } else if (this.nextPlayer().hand.indexOf(WeaponCard) > -1
-      && this.nextPlayer().hand.indexOf(HallwayCard) > -1) {
+      } else if (nextUser.handContains(WeaponCard.name)  && nextUser.handContains(HallwayCard.name)) {
         possibleCards = [WeaponCard, HallwayCard];
-      } else if (this.nextPlayer().hand.indexOf(HallwayCard) > -1
-      && this.nextPlayer().hand.indexOf(UserCard) > -1) {
+      } else if (nextUser.handContains(HallwayCard.name) && nextUser.handContains(UserCard.name)) {
         possibleCards = [HallwayCard, UserCard];
-      } else if (this.nextPlayer().hand.indexOf(WeaponCard) > -1) {
+      } else if (nextUser.handContains(WeaponCard.name)) {
         possibleCards = [WeaponCard];
-      } else if (this.nextPlayer().hand.indexOf(HallwayCard) > -1) {
+      } else if (nextUser.handContains(HallwayCard.name)) {
         possibleCards = [HallwayCard];
-      } else if (this.nextPlayer().hand.indexOf(UserCard) > -1) {
+      } else if (nextUser.handContains(UserCard.name)) {
         possibleCards = [UserCard];
       } else {
-        possibleCards = [];
+        return null;
       }
-      return possibleCards[Math.floor(Math.random() * possibleCards.length)];
+      return possibleCards[Math.floor(Math.random() * possibleCards.length)].name;
     } else {
     // Throw invalid guess error
       return null;

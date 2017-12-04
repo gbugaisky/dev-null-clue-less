@@ -28,6 +28,16 @@ export class User {
     return this.murderer;
   }
 
+  public handContains(input: string): boolean {
+    const index = this.hand.length - 1;
+    for (let i = 0; i <= index; i++) {
+      if (this.hand[i].name === input) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /*public location(): Hallway {
     return this.currentLocation;
   }*/

@@ -27,18 +27,20 @@ export class Controller {
     return returnedData;
   }
 
-  public move(game: Board, user: User, room: Hallway): void {
+  public move(game: Board, user: User, room: Hallway): any {
     game.move(user, room);
-    return;
+    return {username: user.name, newRoom: room.id};
   }
 
-  public accuse(game: Board, user: User, accusedUser: User, room: Room, weapon: Weapon): void {
+  public accuse(game: Board, user: User, accusedUser: User, room: Room, weapon: Weapon): any {
     // if correct accusation, end game. else remove player
     game.userAccusation(user, accusedUser, weapon, room);
-    return;
+    return {isGameOver: game.gameOverStatus, murderRoom: room.id, murderWeapon: weapon,
+      murderer: accusedUser.name, username: user.name};
   }
 
-  public guess(game: Board, user: User, guessedUser: User, room: Room, weapon: Weapon): void {
-    return;
+  public guess(game: Board, user: User, guessedUser: User, room: Room, weapon: Weapon): any {
+    const card = game.userSubmitGuess(user, guessedUser, weapon, room);
+    return{username: user.name, guessedCard: card.name};
   }
 }
