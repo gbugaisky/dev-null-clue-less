@@ -32,8 +32,12 @@ io.on("connection", (sio) => {
     io.in("game").emit("game start", returnVal);
   });
 
-  sio.on("move", (move) => {
-    // TODO: call move
-    io.in("game").emit("player move", "data");
+  sio.on("room", (room) => {
+    sio.join(room);
+
+    sio.on("move", (move) => {
+      // TODO: call move
+      io.in(room).emit("player move", move);
+    });
   });
 });
