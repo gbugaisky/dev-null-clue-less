@@ -12,6 +12,7 @@ export class User {
   public realPlayer: boolean;
   public location: Hallway;
   public hand: Card[];
+  public inGame: boolean;
 
   constructor(name: string, id: number, realPlayer: boolean) {
     this.name = name;
@@ -20,10 +21,21 @@ export class User {
     this.realPlayer = realPlayer;
     this.location = null;
     this.hand = [];
+    this.inGame = realPlayer;
   }
 
   public isMurderer(): boolean {
     return this.murderer;
+  }
+
+  public handContains(input: string): boolean {
+    const index = this.hand.length - 1;
+    for (let i = 0; i <= index; i++) {
+      if (this.hand[i].name === input) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /*public location(): Hallway {

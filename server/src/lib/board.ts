@@ -1,5 +1,6 @@
 "use strict";
 
+import { Card } from "./card";
 import { Deck } from "./deck";
 import { Hallway } from "./hallway";
 import { Room } from "./room";
@@ -88,6 +89,8 @@ export class Board {
       unsetStarts.splice(randStart, 1);
     }
 
+    game.currentPlayer = game.listPlayers()[0];
+
     return game;
   }
 
@@ -103,6 +106,7 @@ export class Board {
   public currentPlayer: User;
   public guessMade: boolean = false;
   public moveMade: boolean = false;
+  public gameOverStatus: boolean = false;
 
   private constructor(owner: User, players: User[], deck: Deck) {
     this.rooms = [];
@@ -135,7 +139,7 @@ export class Board {
     if (index === this.players.length) {
       index = 0;
     } else {
-      index += 1;
+      index = index + 1;
     }
     return this.players[index];
   }
@@ -178,8 +182,8 @@ export class Board {
    * @param accusedRoom Room accused
    * @returns boolean
    */
-  public isLegalAccusation(user: User, accusedRoom: Room): boolean {
-    if (accusedRoom.contains().indexOf(user) >= -1) {
+  public isLegalAccusation(user: User, accusedRoom: Hallway): boolean {
+    if (accusedRoom.contains().indexOf(user) > -1) {
       return true;
     }
     return false;
@@ -190,40 +194,65 @@ export class Board {
     return user.location === guessedRoom;
   }
 
-  public cleanup(): boolean {
-    return false;
-  }
-
-  public gameOver(): void {
-    // currently wincondition in board, but make accusation in user. how to link?
-    this.cleanup();
-    return null;
+  public gameOver(): User {
+    // Returns winner of the game
+    this.gameOverStatus = true;
+    return this.currentPlayer;
   }
 
   public removePlayer(user: User): void {
-    const index = this.players.indexOf(user);
-    if (index > -1) {
-      this.players.splice(index, 1);
-    }
+    user.inGame = false;
     this.nextTurn();
     return null;
   }
 
-  public userSubmitGuess(currentUser: User, guessUser: User, weapon: Weapon, room: Room): void {
+  public userSubmitGuess(currentUser: User, guessUser: User, weapon: Weapon, room: Room): string {
     // checks if person to right has any of the cards guessUser, weapon, room
     // could use currentPlayer?
     if (this.isLegalGuess(currentUser, room)) {
       this.guessMade = true;
-      // next player?
+      const WeaponCard = new Card(weapon, "Weapon", weapon);
+      const UserCard = new Card(guessUser.name, "User", guessUser);
+      const HallwayCard = new Card(room.name, "Hallway", room);
+      const nextUser = this.nextPlayer();
+      let possibleCards: Card[];
+
+      guessUser.location.exit(guessUser);
+      guessUser.location = room;
+      room.enter(guessUser);
+
+      if (nextUser.handContains(WeaponCard.name) && nextUser.handContains(UserCard.name)
+      && nextUser.handContains(HallwayCard.name)) {
+        possibleCards = [WeaponCard, UserCard, HallwayCard];
+      } else if (nextUser.handContains(WeaponCard.name) && nextUser.handContains(UserCard.name)) {
+        possibleCards = [WeaponCard, UserCard];
+      } else if (nextUser.handContains(WeaponCard.name)  && nextUser.handContains(HallwayCard.name)) {
+        possibleCards = [WeaponCard, HallwayCard];
+      } else if (nextUser.handContains(HallwayCard.name) && nextUser.handContains(UserCard.name)) {
+        possibleCards = [HallwayCard, UserCard];
+      } else if (nextUser.handContains(WeaponCard.name)) {
+        possibleCards = [WeaponCard];
+      } else if (nextUser.handContains(HallwayCard.name)) {
+        possibleCards = [HallwayCard];
+      } else if (nextUser.handContains(UserCard.name)) {
+        possibleCards = [UserCard];
+      } else {
+        return null;
+      }
+      return possibleCards[Math.floor(Math.random() * possibleCards.length)].name;
+    } else {
+    // Throw invalid guess error
+      return "invalid";
     }
-    return null;
   }
 
-  public userAccusation(currentUser: User, accusedUser: User, weapon: Weapon, room: Room): boolean {
-    if (this.winCondition.winConditionMet(accusedUser, weapon, room) === true) {
-      this.gameOver();
-    } else {
-      this.removePlayer(currentUser);
+  public userAccusation(currentUser: User, accusedUser: User, weapon: Weapon, room: Room): void {
+    if (this.isLegalAccusation(currentUser, room)) {
+      if (this.winCondition.winConditionMet(accusedUser, weapon, room) === true) {
+        this.gameOver();
+      } else {
+        this.removePlayer(currentUser);
+      }
     }
     return null;
   }
