@@ -195,7 +195,7 @@ export class Board {
   }
 
   public gameOver(): User {
-    // currently wincondition in board, but make accusation in user. how to link?
+    // Returns winner of the game
     this.gameOverStatus = true;
     return this.currentPlayer;
   }
@@ -242,7 +242,7 @@ export class Board {
       return possibleCards[Math.floor(Math.random() * possibleCards.length)].name;
     } else {
     // Throw invalid guess error
-      return null;
+      return "invalid";
     }
   }
 

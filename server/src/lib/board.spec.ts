@@ -196,4 +196,21 @@ describe("Board Class Tests", () => {
     expect(game.isLegalGuess(u1, room)).to.equal(true);
     expect(game.userSubmitGuess(u1, u2, Weapon.Candlestick, room)).to.equal(null);
   });
+
+  it("testing remove player", () => {
+    const game: Board = Board.initialize(["user1", "user2", "user3", "user4", "user5", "user6"]);
+    const contents = game.listPlayers();
+    const u1 = contents[0];
+    game.removePlayer(u1);
+    expect (u1.inGame).to.equal(false);
+  });
+
+  it("testing game over", () => {
+    const game: Board = Board.initialize(["user1", "user2", "user3", "user4", "user5", "user6"]);
+    const contents = game.listPlayers();
+    const u1 = contents[0];
+    const winner = game.gameOver();
+    expect (game.gameOverStatus).to.equal(true);
+    expect (winner).to.equal(u1);
+  });
 });

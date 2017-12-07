@@ -40,7 +40,10 @@ export class Controller {
   }
 
   public guess(game: Board, user: User, guessedUser: User, room: Room, weapon: Weapon): any {
-    const card = game.userSubmitGuess(user, guessedUser, weapon, room);
-    return{username: user.name, guessedCard: card.name};
+    const cardname = game.userSubmitGuess(user, guessedUser, weapon, room);
+    const cardfound: boolean = !(cardname === null || cardname === "invalid");
+    const validguess: boolean = !(cardname === "invalid");
+
+    return{username: user.name, guessedCard: cardname, cardFound: cardfound, validGuess: validguess};
   }
 }
