@@ -25,11 +25,11 @@ const socket = SocketIOClient('http://localhost:5000');
 const cookies = new Cookies();
 let player;
 if(cookies.get('userId')){
-    player = {"name":"player","guid":cookies.get('userId')};
+    player = {"name":"play","guid":cookies.get('userId')};
     console.log("returning player: "+player.guid);
 }else{
     cookies.set('userId',guid())
-    player = {"name":"player","guid":cookies.get('userId')};
+    player = {"name":"play","guid":cookies.get('userId')};
     console.log("new player: "+player.guid);
 }
 
