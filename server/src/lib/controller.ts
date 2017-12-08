@@ -1,3 +1,4 @@
+import {log} from "util";
 import { Board } from "./board";
 import { Data } from "./data";
 import { Hallway } from "./hallway";
@@ -11,11 +12,13 @@ const turnOrder: number[] = [1, 2, 4, 7, 10, 11];
 
 export class Controller {
   public static setupGame(data: Data, players: string[]): InitializationData {
+    log(players.toString());
     const game: Board = Board.initialize(players);
-
+    log(game.players.toString());
     const returnedData = new InitializationData();
     returnedData.boardId = data.store(game);
     for (const user of game.players) {
+      log(user.name);
       const nU = new UserInitializationData();
       nU.realUser = user.realPlayer;
       nU.startingRoom = user.location.id;
