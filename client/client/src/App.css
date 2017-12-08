@@ -1,0 +1,86 @@
+.App {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.Board {
+  display: table;
+  margin: 0 auto;
+}
+
+#Nav > ul li {
+    display: inline;
+    list-style-type: none;
+    margin: 0;
+}
+#Nav > ul {
+    background-color: #111;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+#Nav > ul li a {
+    color: #FFF;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 20px;
+    display: inline-block;
+}
+
+table.Board > tbody > tr > td.BoardRoom:hover > table > tbody > tr.BoardRoomRow > td {
+    opacity: 0.25;
+}
+
+table.Board > tbody > tr > td.BoardHallway:hover > table > tbody > tr.BoardRoomRow:nth-child(even) > td{
+    opacity: 0.25;
+}
+/*BoardHallwayVertical*/
+table.Board > tbody > tr > td.BoardHallwayVertical:hover > table > tbody > tr > td:nth-child(even){
+    opacity: 0.25;
+}
+.BoardRow{
+  display: table-row;
+}
+
+.BoardRoom .BoardHallway{
+  display: table-cell;
+}
+
+
+.BoardRoomRow{
+  display: table-row;
+}
+
+.BoardCell{
+  display: table-cell;
+  width: 10px;
+  height: 10px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

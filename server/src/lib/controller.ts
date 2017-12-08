@@ -12,7 +12,6 @@ const turnOrder: number[] = [1, 2, 4, 7, 10, 11];
 export class Controller {
   public static setupGame(data: Data, players: string[]): InitializationData {
     const game: Board = Board.initialize(players);
-
     const returnedData = new InitializationData();
     returnedData.boardId = data.store(game);
     for (const user of game.players) {
