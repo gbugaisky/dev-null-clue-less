@@ -189,26 +189,52 @@ export class Board {
     return false;
   }
 
+  /**
+   * Function for checking if the guess is legal. User must be in same room as the guessed room.
+   * Returns a boolean depending on whether the guess is legal
+   * @param user User player guessing
+   * @param guessedRoom Room guessed
+   * @returns boolean
+   */
   public isLegalGuess(user: User, guessedRoom: Room): boolean {
     // user must be in the accusedRoom
     return user.location === guessedRoom;
   }
 
+  /**
+   * Function for ending the game.
+   * Sets boolean gameOverStatus to true and returns winner
+   * @param None
+   * @returns User
+   */
   public gameOver(): User {
     // Returns winner of the game
     this.gameOverStatus = true;
     return this.currentPlayer;
   }
 
+  /**
+   * Function for removing a player from the game for incorrect accusation.
+   * Sets current player's inGame status to false and increments to next player
+   * @param None
+   * @returns None
+   */
   public removePlayer(user: User): void {
     user.inGame = false;
     this.nextTurn();
     return null;
   }
 
+  /**
+   * Function for submitting a guess
+   * Returns a string with name of card revealed, "null" for no card found, or "invalid" for invalid guess
+   * @param currentUser User guessing
+   * @param guessUser User guessed
+   * @param weapon Weapon guessed
+   * @param room  Room guessed
+   * @returns string
+   */
   public userSubmitGuess(currentUser: User, guessUser: User, weapon: Weapon, room: Room): string {
-    // checks if person to right has any of the cards guessUser, weapon, room
-    // could use currentPlayer?
     if (this.isLegalGuess(currentUser, room)) {
       this.guessMade = true;
       const WeaponCard = new Card(weapon, "Weapon", weapon);
@@ -246,6 +272,15 @@ export class Board {
     }
   }
 
+  /**
+   * Function for submitting an accusation 
+   * Either game over or accusing player is removed.
+   * @param currentUser User accusing
+   * @param accusedUser User accused
+   * @param weapon Weapon accused
+   * @param room  Room accused
+   * @returns None
+   */
   public userAccusation(currentUser: User, accusedUser: User, weapon: Weapon, room: Room): void {
     if (this.isLegalAccusation(currentUser, room)) {
       if (this.winCondition.winConditionMet(accusedUser, weapon, room) === true) {
@@ -256,11 +291,6 @@ export class Board {
     }
     return null;
   }
-
-  // Replaced by static setAllAdjacencies function
-  // private setGrid(halls: Hallway[], rooms: Room[]): Map<number, Hallway> {
-  //   return null;
-  // }
 
   /**
    * Function for determining if a move from room to room

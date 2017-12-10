@@ -15,6 +15,10 @@ export class WinCondition {
     this.murderRoom = room;
   }
 
+  /**
+   * Function that returns the win condition as string
+   * @returns string
+   */
   public toString(): string {
     let str = "The Win Condition is ";
     str += this.murderer.name + " in ";
@@ -23,14 +27,17 @@ export class WinCondition {
     return str;
   }
 
+  /**
+   * Function that returns a boolean checking if win conditionis met
+   * @param user user accused
+   * @param weapon weapon accused
+   * @param room accused
+   * @returns boolean
+   */
   public winConditionMet(user: User, weapon: Weapon, room: Room): boolean {
     return this.murderer.playerId === user.playerId &&
            this.murderWeapon === weapon &&
            this.murderRoom.id === room.id;
   }
 
-  // moved to board class
-  public playerOut(): void {
-    return null;
-  }
 }

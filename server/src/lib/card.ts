@@ -16,10 +16,18 @@ export class Card {
     this.obj = obj;
   }
 
+  /**
+   * Function that returns a boolean if the input type is equal to the type of the card
+   * @returns boolean
+   */
   public isType(type: any): boolean {
     return this.type === type;
   }
 
+  /**
+   * Function that returns the name of the card
+   * @returns string
+   */
   public contains(): string {
     return this.name;
   }

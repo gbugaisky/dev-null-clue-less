@@ -24,10 +24,19 @@ export class User {
     this.inGame = realPlayer;
   }
 
+  /**
+   * Function that returns whether or not user is the murderer
+   * @returns boolean
+   */
   public isMurderer(): boolean {
     return this.murderer;
   }
 
+  /**
+   * Function that returns whether or not a card with card.name === input is in hand
+   * @param input string containing name of card to be checked
+   * @returns boolean
+   */
   public handContains(input: string): boolean {
     const index = this.hand.length - 1;
     for (let i = 0; i <= index; i++) {
